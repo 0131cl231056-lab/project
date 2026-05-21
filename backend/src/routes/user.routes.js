@@ -1,5 +1,5 @@
 import { Router } from "express";
-import authenticateUser from "../middlewares/auth.middleware.js";
+import {authenticateUser} from "../middlewares/auth.middleware.js";
 import { getProfile , updateProfile , updatePreferences} from "../controllers/user.controller.js";
 import multer, { memoryStorage } from "multer"
 

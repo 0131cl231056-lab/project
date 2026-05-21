@@ -1,7 +1,7 @@
 import userModel from "../models/user.model.js"
 import jwt from "jsonwebtoken"
 import { config } from "../config/config.js"
-import { uploadProfilePicture } from "../utils/uploadImage.js"
+import {uploadFile} from "../utils/uploadImage.js"
 
 async function createToken(res , user , message){
     const token = jwt.sign({
@@ -70,8 +70,7 @@ export async function register(req , res){
 
         if(req.file){
 
-            uploadedProfilePicture =
-                await uploadProfilePicture(
+           uploadedProfilePicture = await uploadFile(
                     req.file.buffer,
                     req.file.originalname
                 )

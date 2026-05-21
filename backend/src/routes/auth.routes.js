@@ -1,7 +1,7 @@
 import { Router } from "express"
 import { register , login , getMe , logout} from "../controllers/auth.controller.js"
 import { loginValidation , registerValidation } from "../validator/auth.validator.js"
-import authenticateUser from "../middlewares/auth.middleware.js"
+import {authenticateUser} from "../middlewares/auth.middleware.js"
 import multer, { memoryStorage } from "multer"
 
 const upload = multer({storage : memoryStorage()})

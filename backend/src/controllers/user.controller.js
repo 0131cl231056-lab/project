@@ -1,5 +1,5 @@
 import userModel from "../models/user.model.js";
-import { uploadProfilePicture } from "../utils/uploadImage.js";
+import {uploadFile } from "../utils/uploadImage.js";
 
 export async function getProfile(req, res) {
 
@@ -63,7 +63,7 @@ export async function updateProfile(req, res) {
 
         if(req.file) {
 
-            const uploadedProfilePicture = await uploadProfilePicture(
+            const uploadedProfilePicture = await uploadFile(
                     req.file.buffer,
                     req.file.originalname
                 );

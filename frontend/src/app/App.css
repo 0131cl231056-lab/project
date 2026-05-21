@@ -1,1 +1,13 @@
 @import "tailwindcss";
+
+@theme {
+  --color-rs-primary-bg: #F5F2E9;
+  --color-rs-secondary-bg: #FDFAF6;
+  --color-rs-accent: #C27A62;
+  --color-rs-primary-text: #4A3B32;
+  --color-rs-secondary-text: #8B7E74;
+}
+
+body {
+  @apply bg-rs-primary-bg text-rs-primary-text antialiased;
+}

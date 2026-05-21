@@ -5,6 +5,11 @@ import Preferences from "../features/user/pages/Preferences";
 import Profile from "../features/user/pages/Profile";
 import EditProfile from "../features/user/pages/EditProfile";
 import MainLayout from "../layout/MainLayout";
+import CreateRoom from "../features/room/pages/CreateRoom";
+import AllRooms from "../features/room/pages/AllRooms";
+import RoomDetails from "../features/room/pages/RoomDetails";
+import MyRooms from "../features/room/pages/MyRooms";
+import EditRoom from "../features/room/pages/EditRoom";
 
 export const routes = createBrowserRouter([
     {
@@ -13,6 +18,26 @@ export const routes = createBrowserRouter([
             {
                 path: "/",
                 element: <h1>Hello</h1>
+            },
+            {
+                path: "/create-room",
+                element: <CreateRoom />
+            },
+            {
+                path: "/rooms",
+                element: <AllRooms />
+            },
+            {
+                path: "/room/:roomId",
+                element: <RoomDetails />
+            },
+            {
+                path: "/owner/my-rooms",
+                element: <MyRooms />
+            },
+            {
+                path: "/edit-room/:roomId",
+                element: <EditRoom />
             },
             {
                 path: "/login",

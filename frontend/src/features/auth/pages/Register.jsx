@@ -22,6 +22,38 @@ const Register = () => {
     role: 'user'
   });
 
+  const [previewImage, setPreviewImage] = useState(null);
+  const [isDragging, setIsDragging] = useState(false);
+
+  const handleFile = (file) => {
+    if (file && file.type.startsWith('image/')) {
+      setFormData({ ...formData, profilePicture: file });
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     if (name === 'city' || name === 'state') {
@@ -273,20 +305,41 @@ const Register = () => {
               {/* Profile Photo */}
               <div className="pt-2">
                 <h4 className="text-xs font-semibold text-[#C27A62] uppercase tracking-widest mb-5">Profile Photo</h4>
-                <div className="mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-[#8B7E74]/20 border-dashed rounded-xl bg-[#F5F2E9] hover:bg-[#8B7E74]/5 transition cursor-pointer">
-                  <div className="space-y-1 text-center">
-                    <svg className="mx-auto h-12 w-12 text-[#8B7E74]/50" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                      <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <div className="flex text-sm text-[#8B7E74] justify-center">
-                      <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-[#C27A62] hover:text-[#4A3B32] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#C27A62]">
-                        <span>Upload a file</span>
-                        <input id="file-upload" name="profilePicture" type="file" className="sr-only" onChange={(e) => setFormData({...formData, profilePicture: e.target.files[0]})} />
-                      </label>
-                      <p className="pl-1">or drag and drop</p>
+                <div 
+                  className={`mt-1 flex justify-center px-6 pt-5 pb-6 border-2 border-dashed rounded-xl transition cursor-pointer relative overflow-hidden ${
+                    isDragging 
+                      ? 'border-[#C27A62] bg-[#C27A62]/10' 
+                      : 'border-[#8B7E74]/20 bg-[#F5F2E9] hover:bg-[#8B7E74]/5'
+                  }`}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onDrop={handleDrop}
+                >
+                  {previewImage ? (
+                    <div className="relative w-full flex flex-col items-center justify-center">
+                      <img src={previewImage} alt="Profile Preview" className="h-32 w-32 object-cover rounded-full border-4 border-white shadow-md mb-4" />
+                      <div className="flex text-sm text-[#8B7E74] justify-center">
+                        <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-[#C27A62] hover:text-[#4A3B32] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#C27A62]">
+                          <span>Change photo</span>
+                          <input id="file-upload" name="profilePicture" type="file" accept="image/*" className="sr-only" onChange={(e) => handleFile(e.target.files[0])} />
+                        </label>
+                      </div>
                     </div>
-                    <p className="text-xs text-[#8B7E74]/80">PNG, JPG, GIF up to 5MB</p>
-                  </div>
+                  ) : (
+                    <div className="space-y-1 text-center">
+                      <svg className="mx-auto h-12 w-12 text-[#8B7E74]/50" stroke="currentColor" fill="none" viewBox="0 0 48 48">
+                        <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                      <div className="flex text-sm text-[#8B7E74] justify-center">
+                        <label htmlFor="file-upload" className="relative cursor-pointer bg-transparent rounded-md font-medium text-[#C27A62] hover:text-[#4A3B32] focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-[#C27A62]">
+                          <span>Upload a file</span>
+                          <input id="file-upload" name="profilePicture" type="file" accept="image/*" className="sr-only" onChange={(e) => handleFile(e.target.files[0])} />
+                        </label>
+                        <p className="pl-1">or drag and drop</p>
+                      </div>
+                      <p className="text-xs text-[#8B7E74]/80">PNG, JPG, GIF up to 5MB</p>
+                    </div>
+                  )}
                 </div>
               </div>
 
