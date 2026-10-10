@@ -5,7 +5,7 @@ import Preferences from "../features/user/pages/Preferences";
 import Profile from "../features/user/pages/Profile";
 import EditProfile from "../features/user/pages/EditProfile";
 import MainLayout from "../layout/MainLayout";
-import CreateRoom from "../features/room/pages/CreateRoom";
+import CreateRoom from "../features/room/pages/createRoom";
 import AllRooms from "../features/room/pages/AllRooms";
 import RoomDetails from "../features/room/pages/RoomDetails";
 import MyRooms from "../features/room/pages/MyRooms";
