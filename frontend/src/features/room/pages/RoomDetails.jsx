@@ -77,7 +77,7 @@ const RoomDetails = () => {
             <button 
               key={idx}
               onClick={() => setActiveImage(idx)}
-              className={`w-2 h-2 rounded-full transition-all ${activeImage === idx ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/80'}`}
+              className={`w-2 h-2 rounded-full transition-all {activeImage === idx ? 'bg-white w-6' : 'bg-white/50 hover:bg-white/80'}`}
             />
           ))}
         </div>
@@ -92,7 +92,7 @@ const RoomDetails = () => {
                 {room.title}
               </h1>
               <div className="text-right">
-                <p className="text-3xl font-black text-rs-primary-text">${room.rent}<span className="text-lg font-normal text-rs-secondary-text">/mo</span></p>
+                <p className="text-3xl font-black text-rs-primary-text">INR {room.rent}<span className="text-lg font-normal text-rs-secondary-text">/mo</span></p>
               </div>
             </div>
             

@@ -10,6 +10,8 @@ import {
   LogOut,
   ChevronDown,
   HeartHandshake,
+  LayoutDashboard,
+  PlusCircle,
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { BedDouble } from "lucide-react";
@@ -86,14 +88,44 @@ const Navbar = () => {
     navigate("/login");
   };
 
-  const navLinks = [
+  const isOwner = profile?.role === "owner";
+
+  const ownerLinks = [
     {
       name: "Home",
       path: "/",
       icon: <Home className="w-4 h-4 mr-2" />,
     },
     {
-      name: "Rooms",
+      name: "Dashboard",
+      path: "/owner/dashboard",
+      icon: <LayoutDashboard className="w-4 h-4 mr-2" />,
+    },
+    // {
+    //   name: "My Rooms",
+    //   path: "/owner/my-rooms",
+    //   icon: <BedDouble className="w-4 h-4 mr-2" />,
+    // },
+    {
+      name: "Create Room",
+      path: "/create-room",
+      icon: <PlusCircle className="w-4 h-4 mr-2" />,
+    },
+    {
+      name: "Browse Rooms",
+      path: "/rooms",
+      icon: <BedDouble className="w-4 h-4 mr-2" />,
+    },
+  ];
+
+  const userLinks = [
+    {
+      name: "Home",
+      path: "/",
+      icon: <Home className="w-4 h-4 mr-2" />,
+    },
+    {
+      name: "Browse Rooms",
       path: "/rooms",
       icon: <BedDouble className="w-4 h-4 mr-2" />,
     },
@@ -102,12 +134,24 @@ const Navbar = () => {
       path: "/find-roommates",
       icon: <Users className="w-4 h-4 mr-2" />,
     },
-    {
-      name: "Preferences",
-      path: "/preferences",
-      icon: <Settings className="w-4 h-4 mr-2" />,
-    },
+    ...(isAuthenticated
+      ? [
+          {
+            name: "Edit Preferences",
+            path: "/preferences",
+            icon: <Settings className="w-4 h-4 mr-2" />,
+          },
+        ]
+      : [
+          {
+            name: "Preferences",
+            path: "/preferences",
+            icon: <Settings className="w-4 h-4 mr-2" />,
+          },
+        ]),
   ];
+
+  const navLinks = isOwner ? ownerLinks : userLinks;
 
   return (
     <nav
@@ -243,6 +287,52 @@ const Navbar = () => {
                       Edit Profile
                     </NavLink>
 
+                    {profile?.role === "owner" && (
+                      <>
+                        <NavLink
+                          to="/owner/dashboard"
+                          className={({ isActive }) =>
+                            `flex items-center w-full px-3 py-2.5 text-sm rounded-xl transition-colors duration-200 ${
+                              isActive
+                                ? "bg-[#F5F2E9] text-[#C27A62] font-medium"
+                                : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                            }`
+                          }
+                        >
+                          <LayoutDashboard className="w-4 h-4 mr-3 text-[#8B7E74]" />
+                          Dashboard
+                        </NavLink>
+
+                        <NavLink
+                          to="/owner/my-rooms"
+                          className={({ isActive }) =>
+                            `flex items-center w-full px-3 py-2.5 text-sm rounded-xl transition-colors duration-200 ${
+                              isActive
+                                ? "bg-[#F5F2E9] text-[#C27A62] font-medium"
+                                : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                            }`
+                          }
+                        >
+                          <BedDouble className="w-4 h-4 mr-3 text-[#8B7E74]" />
+                          My Rooms
+                        </NavLink>
+
+                        <NavLink
+                          to="/create-room"
+                          className={({ isActive }) =>
+                            `flex items-center w-full px-3 py-2.5 text-sm rounded-xl transition-colors duration-200 ${
+                              isActive
+                                ? "bg-[#F5F2E9] text-[#C27A62] font-medium"
+                                : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                            }`
+                          }
+                        >
+                          <PlusCircle className="w-4 h-4 mr-3 text-[#8B7E74]" />
+                          Create Room
+                        </NavLink>
+                      </>
+                    )}
+
                     <div className="h-px bg-[#8B7E74]/15 my-2"></div>
 
                     {/* Logout */}
@@ -366,6 +456,52 @@ const Navbar = () => {
                   <Settings className="w-5 h-5 mr-3 text-[#8B7E74]" />
                   Edit Profile
                 </NavLink>
+
+                {profile?.role === "owner" && (
+                  <>
+                    <NavLink
+                      to="/owner/dashboard"
+                      className={({ isActive }) =>
+                        `flex items-center w-full px-4 py-3 rounded-2xl text-base font-medium transition-colors duration-200 ${
+                          isActive
+                            ? "bg-[#F5F2E9] text-[#C27A62]"
+                            : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                        }`
+                      }
+                    >
+                      <LayoutDashboard className="w-5 h-5 mr-3 text-[#8B7E74]" />
+                      Dashboard
+                    </NavLink>
+
+                    <NavLink
+                      to="/owner/my-rooms"
+                      className={({ isActive }) =>
+                        `flex items-center w-full px-4 py-3 rounded-2xl text-base font-medium transition-colors duration-200 ${
+                          isActive
+                            ? "bg-[#F5F2E9] text-[#C27A62]"
+                            : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                        }`
+                      }
+                    >
+                      <BedDouble className="w-5 h-5 mr-3 text-[#8B7E74]" />
+                      My Rooms
+                    </NavLink>
+
+                    <NavLink
+                      to="/create-room"
+                      className={({ isActive }) =>
+                        `flex items-center w-full px-4 py-3 rounded-2xl text-base font-medium transition-colors duration-200 ${
+                          isActive
+                            ? "bg-[#F5F2E9] text-[#C27A62]"
+                            : "text-[#4A3B32] hover:bg-[#F5F2E9]"
+                        }`
+                      }
+                    >
+                      <PlusCircle className="w-5 h-5 mr-3 text-[#8B7E74]" />
+                      Create Room
+                    </NavLink>
+                  </>
+                )}
 
                 <button
                   onClick={handleLogout}

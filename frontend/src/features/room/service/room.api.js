@@ -64,3 +64,21 @@ export async function deleteRoom(roomId) {
 
     return response.data
 }
+
+export async function toggleRoomAvailability(roomId, available) {
+
+    const formData = new FormData()
+    formData.append("available", available)
+
+    const response = await roomApi.patch(
+        `/room/${roomId}`,
+        formData,
+        {
+            headers: {
+                "Content-Type": "multipart/form-data"
+            }
+        }
+    )
+
+    return response.data
+}

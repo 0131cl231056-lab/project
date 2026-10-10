@@ -34,6 +34,16 @@ const roomSlice = createSlice({
             )
         },
 
+        updateMyRoom: (state, action) => {
+            const updated = action.payload
+            const index = state.myRooms.findIndex(
+                room => room._id === updated._id
+            )
+            if (index !== -1) {
+                state.myRooms[index] = updated
+            }
+        },
+
         setLoading: (state, action) => {
             state.loading = action.payload
         },
@@ -51,6 +61,7 @@ export const {
     setMyRooms,
     addRoom,
     removeRoom,
+    updateMyRoom,
     setLoading,
     setError
 } = roomSlice.actions

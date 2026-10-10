@@ -10,6 +10,9 @@ import AllRooms from "../features/room/pages/AllRooms";
 import RoomDetails from "../features/room/pages/RoomDetails";
 import MyRooms from "../features/room/pages/MyRooms";
 import EditRoom from "../features/room/pages/EditRoom";
+import Home from "../features/home/pages/Home";
+import FindRoommates from "../features/roommate/pages/FindRoommates";
+import ProtectedRoute from "../components/ProtectedRoute";
 
 export const routes = createBrowserRouter([
     {
@@ -17,11 +20,11 @@ export const routes = createBrowserRouter([
         children : [
             {
                 path: "/",
-                element: <h1>Hello</h1>
+                element: <Home />
             },
             {
-                path: "/create-room",
-                element: <CreateRoom />
+                path: "/find-roommates",
+                element: <FindRoommates />
             },
             {
                 path: "/rooms",
@@ -31,14 +34,40 @@ export const routes = createBrowserRouter([
                 path: "/room/:roomId",
                 element: <RoomDetails />
             },
+            // Owner-only protected routes
+            {
+                path: "/create-room",
+                element: (
+                    <ProtectedRoute allowedRoles={["owner"]}>
+                        <CreateRoom />
+                    </ProtectedRoute>
+                )
+            },
             {
                 path: "/owner/my-rooms",
-                element: <MyRooms />
+                element: (
+                    <ProtectedRoute allowedRoles={["owner"]}>
+                        <MyRooms />
+                    </ProtectedRoute>
+                )
+            },
+            {
+                path: "/owner/dashboard",
+                element: (
+                    <ProtectedRoute allowedRoles={["owner"]}>
+                        <MyRooms />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: "/edit-room/:roomId",
-                element: <EditRoom />
+                element: (
+                    <ProtectedRoute allowedRoles={["owner"]}>
+                        <EditRoom />
+                    </ProtectedRoute>
+                )
             },
+            // Public auth routes
             {
                 path: "/login",
                 element: <Login />
@@ -47,17 +76,30 @@ export const routes = createBrowserRouter([
                 path: "/register",
                 element: <Register />
             },
+            // Authenticated user routes
             {
                 path: "/preferences",
-                element: <Preferences />
+                element: (
+                    <ProtectedRoute>
+                        <Preferences />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: "/profile",
-                element: <Profile />
+                element: (
+                    <ProtectedRoute>
+                        <Profile />
+                    </ProtectedRoute>
+                )
             },
             {
                 path: "/editProfile",
-                element: <EditProfile />
+                element: (
+                    <ProtectedRoute>
+                        <EditProfile />
+                    </ProtectedRoute>
+                )
             }
         ]
     }

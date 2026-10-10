@@ -6,6 +6,7 @@ import {
     setMyRooms,
     addRoom,
     removeRoom,
+    updateMyRoom,
     setLoading,
     setError
 } from "../state/room.slice"
@@ -16,7 +17,8 @@ import {
     getRoom,
     getMyRooms,
     updateRoom,
-    deleteRoom
+    deleteRoom,
+    toggleRoomAvailability
 } from "../service/room.api"
 
 export const useRoom = () => {
@@ -165,12 +167,31 @@ export const useRoom = () => {
         }
     }
 
+    async function handleToggleAvailability(roomId, available) {
+
+        try {
+
+            const data = await toggleRoomAvailability(roomId, available)
+
+            dispatch(updateMyRoom(data.room))
+
+            return data.room
+
+        } catch (err) {
+
+            dispatch(setError(err.response?.data?.message))
+            throw err
+
+        }
+    }
+
     return {
         handleCreateRoom,
         handleGetAllRooms,
         handleGetRoom,
         handleGetMyRooms,
         handleUpdateRoom,
-        handleDeleteRoom
+        handleDeleteRoom,
+        handleToggleAvailability
     }
 }

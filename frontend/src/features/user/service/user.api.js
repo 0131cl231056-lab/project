@@ -32,3 +32,13 @@ export async function updateProfile(data) {
 
     return response.data;
 }
+
+export async function getRoommates(params = {}) {
+    const response = await userApi.get("/roommates", { params });
+    return response.data;
+}
+
+export async function getRoommateById(id) {
+    const response = await userApi.get(`/roommate/${id}`);
+    return response.data;
+}

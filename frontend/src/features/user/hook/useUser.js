@@ -1,8 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
 
-import { updatePreferences, getProfile, updateProfile} from "../service/user.api";
+import { updatePreferences, getProfile, updateProfile, getRoommates} from "../service/user.api";
 
-import { setProfile, setProfileCompleted, setLoading, setError} from "../state/user.slice";
+import {
+    setProfile,
+    setProfileCompleted,
+    setLoading,
+    setError,
+    setRoommates,
+    setRoommatesLoading,
+    setRoommatesError
+} from "../state/user.slice";
 
 export function useUser() {
 
@@ -10,6 +18,18 @@ export function useUser() {
 
     const loading = useSelector(
         (state) => state.user.loading
+    );
+
+    const roommates = useSelector(
+        (state) => state.user.roommates
+    );
+
+    const roommatesLoading = useSelector(
+        (state) => state.user.roommatesLoading
+    );
+
+    const roommatesError = useSelector(
+        (state) => state.user.roommatesError
     );
 
     async function handleGetProfile() {
@@ -98,14 +118,36 @@ export function useUser() {
         }
     }
 
+    async function handleGetRoommates(params = {}) {
+        try {
+            dispatch(setRoommatesLoading(true));
+            dispatch(setRoommatesError(null));
+            const response = await getRoommates(params);
+            dispatch(setRoommates(response.roommates || []));
+            return response;
+        } catch(err) {
+            const errorMsg = err.response?.data?.message || err.message || "Failed to load roommates";
+            dispatch(setRoommatesError(errorMsg));
+            console.log(err);
+            throw err;
+        } finally {
+            dispatch(setRoommatesLoading(false));
+        }
+    }
+
     return {
 
         loading,
+        roommates,
+        roommatesLoading,
+        roommatesError,
 
         handleGetProfile,
 
         handleUpdatePreferences,
 
-        handleUpdateProfile
+        handleUpdateProfile,
+
+        handleGetRoommates
     };
 }

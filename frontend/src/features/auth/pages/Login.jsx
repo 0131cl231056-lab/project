@@ -17,9 +17,13 @@ const Login = () => {
     e.preventDefault()
 
     try{
-        await handleLogin(formData)
-        console.log("logged in successfully")
-        navigate("/preferences")
+        const user = await handleLogin(formData)
+        console.log("logged in successfully", user)
+        if (user?.role === 'owner') {
+            navigate("/owner/dashboard")
+        } else {
+            navigate("/")
+        }
     }catch(err){
         console.log(err.message)
     }

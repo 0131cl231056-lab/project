@@ -66,45 +66,65 @@ export async function createRoom(req , res){
     }
 }
 
+export const createMultipleRooms = async (req, res) => {
+    try {
+        const rooms = await roomModel.insertMany(req.body);
+
+        res.status(201).json({
+            success: true,
+            message: `${rooms.length} rooms created successfully`,
+            rooms
+        });
+    } catch (error) {
+        res.status(500).json({
+            success: false,
+            message: error.message
+        });
+    }
+};
+
 export async function getAllRooms(req, res) {
-  try {
+    try {
+        const user = await userModel.findById(req.user.id);
 
-    const userPreferences = req.user?.preferences || {}
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                success: false
+            });
+        }
 
-    const rooms = await roomModel
-      .find()
-      .populate("owner", "fullname email profilePicture");
+        const userPreferences = user.preferences || {};
 
-    const roomsWithCompatibility = rooms.map(room => {
+        const rooms = await roomModel.find();
 
-      const compatibility = calculateCompatibility(
-        userPreferences,
-        room.preferredTenant
-      )
+        const roomsWithCompatibility = rooms.map(room => {
+            const compatibility = calculateCompatibility(
+                userPreferences,
+                room.preferredTenant
+            );
 
-      return {
-        ...room.toObject(),
-        compatibility
-      }
-    })
+            return {
+                ...room.toObject(),
+                compatibility
+            };
+        });
 
-    roomsWithCompatibility.sort(
-      (a, b) => b.compatibility - a.compatibility
-    )
+        roomsWithCompatibility.sort(
+            (a, b) => b.compatibility - a.compatibility
+        );
 
-    return res.status(200).json({
-      message: "rooms fetched successfully",
-      success: true,
-      rooms: roomsWithCompatibility,
-    });
+        return res.status(200).json({
+            success: true,
+            rooms: roomsWithCompatibility
+        });
 
-  } catch (error) {
-
-    return res.status(500).json({
-      message: error.message,
-    });
-
-  }
+    } catch (error) {
+        return res.status(500).json({
+            message: error.message,
+            success: false
+        });
+    }
 }
 
 export async function getRoom(req, res) {

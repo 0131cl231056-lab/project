@@ -1,4 +1,4 @@
-import {setProfile , setLoading , setError} from "../state/auth.slice"
+import {setProfile , setLoading , setError , setInitialized} from "../state/auth.slice"
 import {register , login , getMe , logout} from "../service/auth.api"
 import { useDispatch } from "react-redux"
 
@@ -33,15 +33,22 @@ export const useAuth = () => {
 }
 
     async function handleGetMe(){
-        const data = await getMe()
-        dispatch(setProfile(data.user))
-        return data.user
+        try {
+            const data = await getMe()
+            dispatch(setProfile(data.user))
+            return data.user
+        } catch {
+            dispatch(setProfile(null))
+            return null
+        } finally {
+            dispatch(setInitialized(true))
+        }
     }
 
     async function handleLogout(){
         const data = await logout()
         dispatch(setProfile(null))
-        return data.user
+        return data?.user || null
     }
 
     return {handleRegister , handleLogin , handleGetMe , handleLogout}

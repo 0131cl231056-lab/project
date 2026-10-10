@@ -30,20 +30,20 @@ const RoomFilters = ({ filters, setFilters }) => {
 
         {/* Rent Range */}
         <div>
-          <label className="block text-sm font-semibold text-rs-primary-text mb-2">Max Rent ($/mo)</label>
+          <label className="block text-sm font-semibold text-rs-primary-text mb-2">Max Rent (₹/mo)</label>
           <div className="flex items-center gap-4">
             <input
               type="range"
               name="maxRent"
-              min="100"
-              max="5000"
-              step="100"
-              value={filters.maxRent || 5000}
+              min="1000"
+              max="30000"
+              step="500"
+              value={filters.maxRent || 30000}
               onChange={handleChange}
               className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-rs-accent"
             />
-            <span className="text-sm font-bold text-rs-primary-text w-12 text-right">
-              ${filters.maxRent || '5000'}
+            <span className="text-sm font-bold text-rs-primary-text w-16 text-right">
+              ₹{filters.maxRent || '30000'}
             </span>
           </div>
         </div>
@@ -58,9 +58,9 @@ const RoomFilters = ({ filters, setFilters }) => {
             className="w-full px-4 py-3 rounded-xl bg-rs-secondary-bg border border-transparent focus:border-rs-accent focus:bg-white outline-none transition-all text-sm appearance-none"
           >
             <option value="">All Types</option>
-            <option value="private">Private Room</option>
-            <option value="shared">Shared Room</option>
-            <option value="entire">Entire Place</option>
+            <option value="Single">Single / Private Room</option>
+            <option value="Shared">Shared Room</option>
+            <option value="Double">Double Room</option>
           </select>
         </div>
 
