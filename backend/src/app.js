@@ -12,9 +12,12 @@ app.use(express.json())
 app.use(cookieParser())
 app.use(morgan("dev"))
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: [
+        "http://localhost:5173",
+        "https://project-3-z47i.onrender.com"
+    ],
     credentials: true
-}))
+}));
 
 app.use("/api/auth" , authRouter)
 app.use("/api/user" , userRouter)

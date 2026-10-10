@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const authApi = axios.create({
-    baseURL: import.meta.env.VITE_API_URL,
+    baseURL: `${import.meta.env.VITE_API_URL}/api/auth`,
     withCredentials: true
 });
 
@@ -27,3 +27,5 @@ export async function logout() {
     const response = await authApi.post("/logout");
     return response.data;
 }
+
+export default authApi;
